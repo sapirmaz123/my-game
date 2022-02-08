@@ -16,16 +16,16 @@ clock = pygame.time.Clock()
 colors_list= []
 def colors():
     for i in range(WINDOW_W):
-        colors_list [i]= random_color()
-        return colors_list[i]
+        colors_list.append(random_color())
+    return colors_list
     
-
+list= colors()
 def circles():
     y= 20
     for j in range(4):
         x= 20
         for i in range(WINDOW_W):
-            pygame.draw.circle(screen, colors(), (x, y), 15)
+            pygame.draw.circle(screen, list[i], (x, y), 15)
             x += 50
         y += 50
 
@@ -41,6 +41,7 @@ def random_color():
 
 x_start= WINDOW_W/2-30
 x_end= WINDOW_W/2+30
+
 
 play = True
 while play:
