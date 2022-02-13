@@ -13,21 +13,15 @@ pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
 
 
-colors_list= []
+color_list2 = []
 def colors():
-    for i in range(WINDOW_W):
-        colors_list.append(random_color())
-    return colors_list
-    
-list= colors()
-def circles():
-    y= 20
-    for j in range(4):
-        x= 20
-        for i in range(WINDOW_W):
-            pygame.draw.circle(screen, list[i], (x, y), 15)
-            x += 50
-        y += 50
+  for j in range(4):
+   color_list1 = [] 
+   for i in range(16):
+      color_list1.append(random_color())
+   color_list2.append(color_list1)
+
+        
 
 
 IMAGE= 'background.jpg'
@@ -38,12 +32,15 @@ def random_color():
     return tuple(random.choice(levels) for _ in range(3))
 
 
-
 x_start= WINDOW_W/2-30
 x_end= WINDOW_W/2+30
+circle_x= WINDOW_W/2
+circle_y= 380
 
+colors()
 
 play = True
+
 while play:
     
     for event in pygame.event.get():
@@ -58,11 +55,35 @@ while play:
                 x_end += 50 
     
     screen.blit(img, (0,0))
-    circles()
-
+    y= 20
+    for j in range(4):
+        x= 20
+        for i in range(16):
+            pygame.draw.circle(screen, color_list2[j][i], (x, y), 15)
+            x += 50
+        y += 50
     pygame.draw.line(screen, (0,200,0), [x_start, 400], [x_end, 400], width=10)
-    pygame.display.flip()
-    clock.tick(40)
+    
+    random_x= random.randint(0,800)
+    random_y= random.randint(0,500)
+
+    pygame.draw.circle(screen, (255,255,255), (circle_x, circle_y), 15)
+
+    if circle_y >= 0 or circle_x <= 800 or circle_x >= 0:
+        circle_x -= 10
+        circle_y -= 40
+        pygame.display.flip()
+   
+    if circle_y <= 0 or circle_x >= 800 or circle_x <= 0:
+        circle_x += 10
+        circle_y += 40
+        pygame.display.flip()
+          
+
+
+    # pygame.display.flip()
+    clock.tick(30)
 
 
 pygame.quit()
+
