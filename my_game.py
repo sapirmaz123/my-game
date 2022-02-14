@@ -69,15 +69,15 @@ while play:
 
     pygame.draw.circle(screen, (255,255,255), (circle_x, circle_y), 15)
 
-    if circle_y >= 0 or circle_x <= 800 or circle_x >= 0:
+    if circle_y > 0 or circle_x < WINDOW_W or circle_x > 0:
         circle_x -= 10
         circle_y -= 40
-        pygame.display.flip()
+        # pygame.display.flip()
    
-    if circle_y <= 0 or circle_x >= 800 or circle_x <= 0:
+    if circle_y <= 0 or circle_x >= WINDOW_W or circle_x <= 0:
         circle_x += 10
         circle_y += 40
-        pygame.display.flip()
+    pygame.display.flip()
           
 
 
