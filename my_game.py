@@ -1,5 +1,7 @@
+from cgitb import text
 import pygame
 import random
+
 
 # screen size 
 WINDOW_W = 800
@@ -20,9 +22,11 @@ def colors():
    for i in range(16):
       color_list1.append(random_color())
    color_list2.append(color_list1)
+   
 
         
-
+def is_ball_hit(x, y, circle_x, circle_y):
+  return abs(x -circle_x) <50 and abs(y-circle_y) <50 
 
 IMAGE= 'background.jpg'
 img= pygame.image.load(IMAGE)
@@ -37,53 +41,103 @@ x_end= WINDOW_W/2+30
 circle_x= WINDOW_W/2
 circle_y= 380
 
-colors()
+def is_line_hit(x_start, x_end, circle_x, circle_y):
+  return abs(x_start -circle_x) <50 and abs(x_end -circle_x) <50 and abs(400-circle_y) <50 
 
+
+colors()
+end= True
 play = True
+up = True
+counter= 0
 
 while play:
     
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             play = False
-        elif event.type == pygame.KEYDOWN: 
+        elif event.type == pygame.KEYDOWN:         
             if event.key == pygame.K_LEFT: 
                 x_start -= 50
                 x_end -= 50
             if event.key == pygame.K_RIGHT: 
                 x_start += 50
-                x_end += 50 
-    
+                x_end += 50
+
     screen.blit(img, (0,0))
     y= 20
+
     for j in range(4):
         x= 20
         for i in range(16):
-            pygame.draw.circle(screen, color_list2[j][i], (x, y), 15)
+            if color_list2[j][i] != '':
+                pygame.draw.circle(screen, color_list2[j][i], (x, y), 15)
+            if is_ball_hit(x, y, circle_x, circle_y):
+                color_list2[j][i]= ''
+                counter+=1
+        
             x += 50
         y += 50
+
+    if counter == 64:
+        font = pygame.font.SysFont(None, 90)
+        text = font.render('you win!', True, red)
+    if x_start <=0:
+        x_start= 0
+        x_end= 50
+    if x_start >= WINDOW_W:
+        x_start= WINDOW_W
+        x_end= WINDOW_W- 50
     pygame.draw.line(screen, (0,200,0), [x_start, 400], [x_end, 400], width=10)
-    
+
+    red = (150, 0, 0)
+    font2 = pygame.font.SysFont(None, 90)
+    text2 = font2.render('game over', True, red)
+
     random_x= random.randint(0,800)
     random_y= random.randint(0,500)
 
     pygame.draw.circle(screen, (255,255,255), (circle_x, circle_y), 15)
 
-    if circle_y > 0 or circle_x < WINDOW_W or circle_x > 0:
-        circle_x -= 10
-        circle_y -= 40
-        # pygame.display.flip()
-   
-    if circle_y <= 0 or circle_x >= WINDOW_W or circle_x <= 0:
+    if is_line_hit(x_start, x_end, circle_x, circle_y):
+        up = True
+
+    if circle_y <= 0:
+        up = False
+
+    if circle_y >= WINDOW_H:
+        screen.blit(text2, (250, WINDOW_H/2-30))    
+
+    if circle_x >= WINDOW_W:
+        end = True
+
+    if circle_x <= 0:
+        end = False
+
+    if not end:
         circle_x += 10
-        circle_y += 40
+
+    if end:
+        circle_x -= 15
+
+    if not up:
+        circle_y += 30
+
+    if up: 
+        circle_y -= 40
+    
+
+     
+
     pygame.display.flip()
           
 
 
-    # pygame.display.flip()
-    clock.tick(30)
+    clock.tick(15)
 
 
 pygame.quit()
+
+
 
