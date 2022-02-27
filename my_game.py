@@ -1,4 +1,6 @@
 from cgitb import text
+from turtle import color
+from typing import Counter
 import pygame
 import random
 
@@ -26,10 +28,13 @@ def colors():
 
         
 def is_ball_hit(x, y, circle_x, circle_y):
-  return abs(x -circle_x) <50 and abs(y-circle_y) <50 
+    print("hit")
+    return abs(x -circle_x) <50 and abs(y-circle_y) <50 
 
 IMAGE= 'background.jpg'
 img= pygame.image.load(IMAGE)
+WINNER= 'winner.jpg'
+win= pygame.image.load(WINNER)
 
 def random_color():
     levels = range(32,256,32)
@@ -42,7 +47,7 @@ circle_x= WINDOW_W/2
 circle_y= 380
 
 def is_line_hit(x_start, x_end, circle_x, circle_y):
-  return abs(x_start -circle_x) <50 and abs(x_end -circle_x) <50 and abs(400-circle_y) <50 
+    return abs(x_start -circle_x) <50 and abs(x_end -circle_x) <50 and abs(400-circle_y) <50 
 
 
 colors()
@@ -66,6 +71,7 @@ while play:
                 x_end += 50
 
     screen.blit(img, (0,0))
+    
     y= 20
 
     for j in range(4):
@@ -75,14 +81,14 @@ while play:
                 pygame.draw.circle(screen, color_list2[j][i], (x, y), 15)
             if is_ball_hit(x, y, circle_x, circle_y):
                 color_list2[j][i]= ''
-                counter+=1
+                counter+=1 
         
             x += 50
         y += 50
 
-    if counter == 64:
-        font = pygame.font.SysFont(None, 90)
-        text = font.render('you win!', True, red)
+    
+
+
     if x_start <=0:
         x_start= 0
         x_end= 50
@@ -98,6 +104,10 @@ while play:
     random_x= random.randint(0,800)
     random_y= random.randint(0,500)
 
+    color = (150, 40, 0)
+    font1 = pygame.font.SysFont(None, 130)
+    text1 = font1.render('win!!!!!!', True, color)
+
     pygame.draw.circle(screen, (255,255,255), (circle_x, circle_y), 15)
 
     if is_line_hit(x_start, x_end, circle_x, circle_y):
@@ -106,7 +116,12 @@ while play:
     if circle_y <= 0:
         up = False
 
-    if circle_y >= WINDOW_H:
+
+    if Counter == 64:
+        print("win!!!")
+        screen.blit(text1, (250, WINDOW_H/2-30))    
+
+    elif circle_y >= WINDOW_H:
         screen.blit(text2, (250, WINDOW_H/2-30))    
 
     if circle_x >= WINDOW_W:
