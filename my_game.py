@@ -28,7 +28,6 @@ def colors():
 
         
 def is_ball_hit(x, y, circle_x, circle_y):
-    print("hit")
     return abs(x -circle_x) <50 and abs(y-circle_y) <50 
 
 IMAGE= 'background.jpg'
@@ -49,12 +48,16 @@ circle_y= 380
 def is_line_hit(x_start, x_end, circle_x, circle_y):
     return abs(x_start -circle_x) <50 and abs(x_end -circle_x) <50 and abs(400-circle_y) <50 
 
+def win(): 
+   return color_list2.count('') == 64
+        
 
 colors()
 end= True
 play = True
 up = True
 counter= 0
+hold= 0
 
 while play:
     
@@ -64,12 +67,13 @@ while play:
             play = False
         elif event.type == pygame.KEYDOWN:         
             if event.key == pygame.K_LEFT: 
-                x_start -= 50
-                x_end -= 50
-            if event.key == pygame.K_RIGHT: 
-                x_start += 50
-                x_end += 50
-
+                hold = -1
+            if event.key == pygame.K_RIGHT:
+                hold = 1
+        elif event.type == pygame.KEYUP:
+            hold = 0
+    x_start += 30*hold
+    x_end += 30*hold
     screen.blit(img, (0,0))
     
     y= 20
@@ -82,7 +86,7 @@ while play:
             if is_ball_hit(x, y, circle_x, circle_y):
                 color_list2[j][i]= ''
                 counter+=1 
-        
+            
             x += 50
         y += 50
 
@@ -106,7 +110,7 @@ while play:
 
     color = (150, 40, 0)
     font1 = pygame.font.SysFont(None, 130)
-    text1 = font1.render('win!!!!!!', True, color)
+    text1 = font1.render('win!', True, color)
 
     pygame.draw.circle(screen, (255,255,255), (circle_x, circle_y), 15)
 
@@ -117,7 +121,7 @@ while play:
         up = False
 
 
-    if Counter == 64:
+    if win():
         print("win!!!")
         screen.blit(text1, (250, WINDOW_H/2-30))    
 
@@ -153,6 +157,7 @@ while play:
 
 
 pygame.quit()
+
 
 
 
