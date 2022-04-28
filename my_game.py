@@ -48,8 +48,8 @@ circle_y= 380
 def is_line_hit(x_start, x_end, circle_x, circle_y):
     return abs(x_start -circle_x) <50 and abs(x_end -circle_x) <50 and abs(400-circle_y) <50 
 
-def win(): 
-   return color_list2.count('') == 64
+# def win(): 
+#    return color_list2.count('') == 64
         
 
 colors()
@@ -81,17 +81,20 @@ while play:
     for j in range(4):
         x= 20
         for i in range(16):
-            if color_list2[j][i] != '':
+            if color_list2[j][i] != None:
                 pygame.draw.circle(screen, color_list2[j][i], (x, y), 15)
             if is_ball_hit(x, y, circle_x, circle_y):
-                color_list2[j][i]= ''
+                color_list2[j][i]= None
                 counter+=1 
-            
+                
             x += 50
         y += 50
 
-    
-
+    if color_list2.count(None) == len(color_list2):
+        red = (150, 0, 0)
+        font3 = pygame.font.SysFont(None, 90)
+        text3 = font3.render('win', True, red)
+        print("win!!!!")
 
     if x_start <=0:
         x_start= 0
@@ -108,9 +111,9 @@ while play:
     random_x= random.randint(0,800)
     random_y= random.randint(0,500)
 
-    color = (150, 40, 0)
-    font1 = pygame.font.SysFont(None, 130)
-    text1 = font1.render('win!', True, color)
+    # color = (150, 40, 0)
+    # font1 = pygame.font.SysFont(None, 130)
+    # text1 = font1.render('win!', True, color)
 
     pygame.draw.circle(screen, (255,255,255), (circle_x, circle_y), 15)
 
@@ -121,9 +124,9 @@ while play:
         up = False
 
 
-    if win():
-        print("win!!!")
-        screen.blit(text1, (250, WINDOW_H/2-30))    
+    # if win():
+    #     print("win!!!")
+    #     screen.blit(text1, (250, WINDOW_H/2-30))    
 
     elif circle_y >= WINDOW_H:
         screen.blit(text2, (250, WINDOW_H/2-30))    
